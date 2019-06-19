@@ -33,5 +33,43 @@
 * 而提交的信息会显示在第四部分，也就是空格行的下一个部分，也就是表单信息(Form Data)里面，这里最好也是点一下view source，比如看到
 `password:123`
 * 然后第二部分和第三部分可以在Request Headers的view source里面看到
+* 存在的问题
+1. 点击后会在当前页面刷新，
+2. 或者在新开一个页面刷新，所以不是特别好用。
+### a标签发请求
+* a标签可以发起get请求，[JSbin链接](http://js.jirengu.com/qovigosoda/1/edit),通过开发者工具在Network里面可以看到发起了一个请求，并且get请求会把submit的信息一起放到Request Headers的view source的第一行可以看到。
+* 我们增加一个[click()原生的API](https://developer.mozilla.org/zh-CN/docs/Web/API/HTMLElement/click)，可以自动点击，[jsbin链接](http://js.jirengu.com/gidohiwigi/1/edit?html,output)
+* 可以设置一个延迟函数,比如setTimeout来延迟三秒自动点击。
+* 存在的问题
+1. 点击后会在当前页面刷新，
+2. 或者在新开一个页面刷新，所以不是特别好用。
+3. 只能发起get请求。
+### img标签发请求
+* img发请求不会刷新页面或者新开一个页面刷新。
+* img发请求必须把它放到body里面。
+* img存在的问题
+1. img只能发起get请求。
+2. img发请求必须以图片形式展示。
+* [jsbin链接](http://js.jirengu.com/wiwewaweba/1/edit?html,output)
+### link标签发请求
+* link发请求必须把它放到head里面。
+* 存在的问题
+1. link只能发起get请求
+2. 只能以 CSS、favicon 的形式展示
+* [jsbin链接](http://js.jirengu.com/cavubipoju/1/edit?html,output)
+### scirpt标签发请求
+* scirpt发请求必须把它放到body里面。
+* script存在的问题
+1. script只能发起get请求
+2. script只能以JS脚本的形式运行。比如上节课说的[jsonp就是这个方式](https://github.com/bomber063/JSONP-for-35).
+* [jsbin链接](http://js.jirengu.com/duxitumifa/1/edit?html,output)
+***
+* 以上就是能考虑的常规的请求方式
+***
+* 以前的时候没有什么方式可以实现
+1. get、post、put、delete 请求都行
+2. 想以什么形式展示就以什么形式展示
+
+
 
 
