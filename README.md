@@ -70,6 +70,27 @@
 1. get、post、put、delete 请求都行
 2. 想以什么形式展示就以什么形式展示
 
+## 微软的突破
+* IE 5 率先在 JS 中引入 ActiveX 对象（API），使得 JS 可以直接发起 HTTP 请求。IE在早期对web的贡献是十分巨大的，只不过IE没有遵从标准，可能当时是有点自大了，导致后面出了一个chorme一军突起，导致IE走向末路。早期的IE6占了全球浏览器的90%份额，当时还有一个firefox占了10%左右的份额，然后IE的负责部分就把IE的维护拆掉了，只留下很少的人维护不出病毒即可，也不怎么更新了。firefox也是一直都不温不火，最后被谷歌开发的浏览器chrome突然击垮了IE浏览器。chorme浏览器大概是2008年出现的。仅仅用了两年时间就把IE的份额准平了，现在已经占到份额40%左右。IE大概30%左右。现在大陆用IE的也不多了，开发者一般用chorme，别的用双核浏览器——[维基百科](https://zh.wikipedia.org/wiki/%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8),[百度百科](https://baike.baidu.com/item/%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8/7126309?fr=aladdin)
+* 随后 Mozilla、 Safari、 Opera 也跟进（抄袭）了，取名 XMLHttpRequest，它的[MDN链接](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)，[它的W3c链接](http://www.w3school.com.cn/xml/xml_http.asp)并被纳入 W3C 规范
+***
+我们可以在控制台输入
+```
+window.XMLHttpRequest
+```
+后可以看到是一个函数
+并且我们可以用它构造一个实例对象
+```
+var x=new XMLHttpRequest()
+```
+然后我们就可以到看到这个a存在很多属性和函数.
+* Gmail就是最早用AJAX功能的，就是页面不会刷新，但是会局部更新。只是当点的一瞬间，它会请求邮件的内容然后展示给你。
+***
+* 终于Jesse James Garrett(杰西·詹姆士·贾瑞特)提出AJAX这个概念
+* AJAX技术点大概三个：
+1. 使用 XMLHttpRequest 发请求
+2. 服务器返回 XML 格式的字符串(这里为什么是XML，因为当时提出AJAX概念的时候，用XML是比较容易做到的数据传输格式，但是后面都**改用JSON**)
+3. JS 解析 XML，并更新局部页面(**以前是用JS解析XML，现在是用JS解析JSON**)
 
-
+* 一个面试题就是：请使用原生JS来发送AJAX请求。(这个记得后面再补充)
 
