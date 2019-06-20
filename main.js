@@ -60,30 +60,34 @@
 //   }, 0);
 // })
 
-myButton.addEventListener('click',function(e){
-  
-  let request=new XMLHttpRequest()
+myButton.addEventListener('click', function (e) {
+
+  let request = new XMLHttpRequest()
   // request.open('get','http://bomber.com:8001/xxx')
 
-  request.open('get','./xxx')
-  request.onreadystatechange=function(){
-    console.log(request.readyState)
-  }
+  request.open('get', './xxx')
+  // request.onreadystatechange=function(){
+  //   console.log(request.readyState)
+  // }
   request.send()
 
 
   // setInterval(() => {
   //   console.log(request.readyState)
   // }, 1);
-  // request.onreadystatechange=function(){
-  //   if(request.readyState===4){
-  //     if(request.status>=200&& request.status<300){
-  //       console.log(request.responseText)
-  //     }
-  //   }
-  // }
+  request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      console.log('说明请求完毕')
+      if (request.status >= 200 && request.status < 300) {
+        console.log('说明请求成功')
+      }
+      else if (request.status >= 400) {
+        console.log('说明请求失败')
+      }
+    }
+  }
 })
-  
+
 
 
 

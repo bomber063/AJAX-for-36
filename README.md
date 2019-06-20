@@ -221,5 +221,25 @@ VM121:5 default: 3.721923828125ms//这是输出所用的时间
     console.log(request.readyState)
   }
 ```
+### 请求结束之后是否成功或者失败的API——readyState
+* 需要用到[XMLHttpRequest.status](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/status)
+* 只读属性 XMLHttpRequest.status 返回了XMLHttpRequest 响应中的数字状态码。status 的值是一个无符号短整型。在请求完成前，status的值为0。值得注意的是，如果 XMLHttpRequest 出错，浏览器返回的 status 也为0。
+* status码是标准的HTTP status codes。举个例子，status 200 代表一个成功的请求。如果服务器响应中没有明确指定status码，XMLHttpRequest.status 将会默认为200。
+* 可以通过代码来判断请求成功
+```
+  request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      console.log('说明请求完毕')
+      if (request.status >= 200 && request.status < 300) {
+        console.log('说明请求成功')
+      }
+      else if (request.status >= 400) {
+        console.log('说明请求失败')
+      }
+    }
+  }
+```
+* 当然把后端改成404,这里就会显示说明请求失败。
+
 
 
