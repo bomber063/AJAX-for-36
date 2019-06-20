@@ -40,20 +40,11 @@ var server = http.createServer(function (request, response) {
 
     // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')
     response.write(`
-    // {
-    //   "note":{
-    //     "to": "小谷",
-    //     "from": "方方",
-    //     "heading": "打招呼",
-    //     "content": "hi"
-    //   }
-    // }
-    <?xml version="1.0" encoding="UTF-8"?>
 <note>
-  <to>Tove</to>
-  <from>Jani</from>
-  <heading>Reminder</heading>
-  <body>Don't forget me this weekend!</body>
+  <to>小谷</to>
+  <from>bomber</from>
+  <heading>打招呼</heading>
+  <body>你好</body>
 </note>
     `)
     response.end()

@@ -79,6 +79,12 @@ myButton.addEventListener('click', function (e) {
     if (request.readyState === 4) {
       console.log('说明请求完毕')
       if (request.status >= 200 && request.status < 300) {
+        let parser = new DOMParser();
+        let xmlDoc = parser.parseFromString(request.responseText, "text/xml");
+        console.log(xmlDoc)
+        console.log(xmlDoc.__proto__)
+        let title=xmlDoc.getElementsByTagName('heading')[0].textContent
+        console.log(title)
         console.log('说明请求成功')
       }
       else if (request.status >= 400) {

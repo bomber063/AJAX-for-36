@@ -221,7 +221,7 @@ VM121:5 default: 3.721923828125ms//这是输出所用的时间
     console.log(request.readyState)
   }
 ```
-### 请求结束之后是否成功或者失败的API——readyState
+#### 请求结束之后是否成功或者失败的API——readyState
 * 需要用到[XMLHttpRequest.status](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/status)
 * 只读属性 XMLHttpRequest.status 返回了XMLHttpRequest 响应中的数字状态码。status 的值是一个无符号短整型。在请求完成前，status的值为0。值得注意的是，如果 XMLHttpRequest 出错，浏览器返回的 status 也为0。
 * status码是标准的HTTP status codes。举个例子，status 200 代表一个成功的请求。如果服务器响应中没有明确指定status码，XMLHttpRequest.status 将会默认为200。
@@ -240,6 +240,91 @@ VM121:5 default: 3.721923828125ms//这是输出所用的时间
   }
 ```
 * 当然把后端改成404,这里就会显示说明请求失败。
+#### AJAX拿到后端返回的响应信息的API——responseText(以XML为例子，XML它现在已经过时了，但是可以学习它的某些操作)
+* 通过[XMLHttpRequest.responseText](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseText) 属性返回一个**DOMString**，它包含对文本的请求的响应，如果请求不成功或尚未发送，则返回null。responseText属性在请求完成之前将会得到部分属性。 如果 XMLHttpRequest.responseType 的值不是 text 或者空字符串，届时访问 XMLHttpRequest.responseText 将抛出 InvalidStateError 异常。
+* 而这里就是返回的是**字符串，只是长得像XML**，我们可以通过responseText.__proto__可以看到他是一个字符串。
+```
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+```
+
+* [xml操作dom链接说明](https://www.w3schools.com/xml/dom_intro.asp)
+
+我们在控制台输入如下代码
+```
+var text=`<?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>`
+parser = new DOMParser();
+xmlDoc = parser.parseFromString(text,"text/xml");
+
+```
+之后就可以获得xmlDoc为XMLdocument元素，内容为:
+```
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+```
+* 之后我们输入xmlDoc.getElementsByTagName('to')[0]，就可以获得to标签及它的内容啦。**说明浏览器获取到后端返回的响应是可以用DOM的各种API来操作它的**
+* 上面的API链接——[DOMParser](https://developer.mozilla.org/zh-CN/docs/Web/API/DOMParser)。DOMParser 可以将存储在字符串中的 XML 或 HTML 源代码解析为一个 DOM Document。
+
+#### 解析SVG或者HTML文档节
+* DOMParser也可以用来解析一个SVG文档(Firefox 10.0 / Thunderbird 10.0 / SeaMonkey 2.7)或者HTML文档 (Firefox 12.0 / Thunderbird 12.0 / SeaMonkey 2.9). 根据给定的MIME类型不同,parseFromString方法可能返回三种不同类型的文档.如果MIME类型是 text/xml, 则返回一个XMLDocument, 如果MIME类型是 text/svg+xml,则返回一个 SVGDocument, 如果MIME类型是 text/html, 则返回一个HTMLDocument.
+#### 解析 XML节
+一旦建立了一个解析对象以后,你就可以使用它的parseFromString方法来解析一个XML字符串:
+
+#### 我们把原来代码修改下
+* 此时需要删除前面的申明<?xml version="1.0" encoding="UTF-8"?>，不删除可能会报错。
+* 后端代码修改如下：
+```
+else if (path === '/xxx') {
+    response.statusCode = 200
+    response.setHeader('Content-Type', 'text/xml;charset=utf-8')
+    response.write(`
+<note>
+  <to>小谷</to>
+  <from>bomber</from>
+  <heading>打招呼</heading>
+  <body>你好</body>
+</note>
+    `)
+    response.end()
+```
+* 前端代码修改如下：
+```
+      if (request.status >= 200 && request.status < 300) {
+        let parser = new DOMParser();
+        let xmlDoc = parser.parseFromString(request.responseText, "text/xml");
+        console.log(xmlDoc)
+        console.log(xmlDoc.__proto__)
+        let title=xmlDoc.getElementsByTagName('heading')[0].textContent
+        console.log(title)
+        console.log('说明请求成功')
+      }
+```
+* 此时就把DOMstring字符串解析（或者是转换）成了XML对象
+
+
+    // {
+    //   "note":{
+    //     "to": "小谷",
+    //     "from": "方方",
+    //     "heading": "打招呼",
+    //     "content": "hi"
+    //   }
+    // }
+    // <?xml version="1.0" encoding="UTF-8"?>
 
 
 
