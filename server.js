@@ -3,16 +3,16 @@ var fs = require('fs')
 var url = require('url')
 var port = process.argv[2]
 
-if(!port){
+if (!port) {
   console.log('请指定端口号好不啦？\nnode server.js 8888 这样不会吗？')
   process.exit(1)
 }
 
-var server = http.createServer(function(request, response){
+var server = http.createServer(function (request, response) {
   var parsedUrl = url.parse(request.url, true)
-  var pathWithQuery = request.url 
+  var pathWithQuery = request.url
   var queryString = ''
-  if(pathWithQuery.indexOf('?') >= 0){ queryString = pathWithQuery.substring(pathWithQuery.indexOf('?')) }
+  if (pathWithQuery.indexOf('?') >= 0) { queryString = pathWithQuery.substring(pathWithQuery.indexOf('?')) }
   var path = parsedUrl.pathname
   var query = parsedUrl.query
   var method = request.method
@@ -21,34 +21,43 @@ var server = http.createServer(function(request, response){
 
   console.log('方方说：含查询字符串的路径\n' + pathWithQuery)
 
-  if(path === '/'){
+  if (path === '/') {
     let string = fs.readFileSync('./index.html', 'utf8')
     response.statusCode = 200
     response.setHeader('Content-Type', 'text/html;charset=utf-8')
     response.write(string)
     response.end()
-  }else if(path==='/main.js'){
+  } else if (path === '/main.js') {
     let string = fs.readFileSync('./main.js', 'utf8')
     response.statusCode = 200
     response.setHeader('Content-Type', 'text/javascript;charset=utf-8')
     response.write(string)
     response.end()
-  }else if(path==='/xxx'){
+  } else if (path === '/xxx') {
     response.statusCode = 200
-    response.setHeader('Content-Type', 'text/json;charset=utf-8')
-    response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')
+    // response.setHeader('Content-Type', 'text/json;charset=utf-8')
+    response.setHeader('Content-Type', 'text/xml;charset=utf-8')
+
+    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')
     response.write(`
-    {
-      "note":{
-        "to": "小谷",
-        "from": "方方",
-        "heading": "打招呼",
-        "content": "hi"
-      }
-    }
+    // {
+    //   "note":{
+    //     "to": "小谷",
+    //     "from": "方方",
+    //     "heading": "打招呼",
+    //     "content": "hi"
+    //   }
+    // }
+    <?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
     `)
     response.end()
-  }else{
+  } else {
     response.statusCode = 404
     response.setHeader('Content-Type', 'text/html;charset=utf-8')
     response.write(`

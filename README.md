@@ -106,7 +106,11 @@ myButton.addEventListener('click',function(e){
   request.send()
 })
 ```
-### XMLHttpRequest
+***
+接下来我们来实现AJAX技术点大概三个
+***
+
+### 1.使用 XMLHttpRequest 发请求
 * 使用XMLHttpRequest (XHR)对象可以与服务器交互。您可以从URL获取数据，而**无需让整个的页面刷新。这使得Web页面可以只更新页面的局部**，而不影响用户的操作。XMLHttpRequest在 Ajax 编程中被大量使用。
 
 ### open()
@@ -119,4 +123,27 @@ myButton.addEventListener('click',function(e){
 > 后面的是可选的。默认是异步的，还有post请求中用户认证名和认证密码。
 ### send()
 * XMLHttpRequest.send() 方法用于发送 HTTP 请求。如果是异步请求（默认为异步请求），则此方法会在请求发送后立即返回；如果是同步请求，则此方法直到响应到达后才会返回。
+
+### 2.服务器返回 XML 格式的字符串
+* [xmlw3schools链接](https://www.w3schools.com/xml/),这个网站需要FQ。
+* 你还需要修改[MIME类型](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Basics_of_HTTP/MIME_Types),也就是content-type里面，比如
+`    response.setHeader('Content-Type', 'text/xml;charset=utf-8')`
+或者
+`    response.setHeader('Content-Type', 'application/xml;charset=utf-8')`
+都可以
+* 在xmlw3schools链接中找到一个例子来尝试
+```
+    response.write(`
+    <?xml version="1.0" encoding="UTF-8"?>
+<note>
+  <to>Tove</to>
+  <from>Jani</from>
+  <heading>Reminder</heading>
+  <body>Don't forget me this weekend!</body>
+</note>
+    `)
+```
+* 这样就可以在在开发者工具的响应的最后一部分中看到这一串符合XML格式的字符串啦。
+
+
 
