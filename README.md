@@ -93,4 +93,30 @@ var x=new XMLHttpRequest()
 3. JS 解析 XML，并更新局部页面(**以前是用JS解析XML，现在是用JS解析JSON**)
 
 * 一个面试题就是：请使用原生JS来发送AJAX请求。(这个记得后面再补充)
+## 写一个AJAX
+* 首先我们要明白http响应的第四分部始终都是字符串,只是某些时候刚好符合html格式的一个字符串而已。但是它不是html，而是字符串。当然前三部分也是字符串。
+`    response.write(string)`
+* http的**后端路径没有点**,比如路径是'/xxx'，而不是'./xxx'，因为浏览器会默认转换为'/xxx'。**后端加点会导致请求出错，而前端部分的路径可加点，也可以不加点**。
+* 如果是js的后台响应返回是可以在前端浏览器自动执行的。
+* 写出下面三句话就可以发请求啦，用的API包括——[XMLHttpRequest](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest),[send](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/send),[open](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/open)
+```
+myButton.addEventListener('click',function(e){
+  let request=new XMLHttpRequest()
+  request.open('get','/xxx')
+  request.send()
+})
+```
+### XMLHttpRequest
+* 使用XMLHttpRequest (XHR)对象可以与服务器交互。您可以从URL获取数据，而**无需让整个的页面刷新。这使得Web页面可以只更新页面的局部**，而不影响用户的操作。XMLHttpRequest在 Ajax 编程中被大量使用。
+
+### open()
+* 初始化一个请求。该方法只能JavaScript代码中使用，若要在native code中初始化请求，请使用openRequest()。
+* 语法：xhrReq.open(method, url);
+* method
+> 要使用的HTTP方法，比如「GET」、「POST」、「PUT」、「DELETE」、等。这里也可以写小写，如果你写的是这四个以外的方法也可以，但是服务器只是不接受。**就是你想怎么请求，就怎么请求**。对于非HTTP(S) URL被忽略。
+* url
+> 一个DOMString表示要向其发送请求的URL。
+> 后面的是可选的。默认是异步的，还有post请求中用户认证名和认证密码。
+### send()
+* XMLHttpRequest.send() 方法用于发送 HTTP 请求。如果是异步请求（默认为异步请求），则此方法会在请求发送后立即返回；如果是同步请求，则此方法直到响应到达后才会返回。
 
