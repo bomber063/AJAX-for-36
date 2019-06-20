@@ -147,6 +147,8 @@ myButton.addEventListener('click',function(e){
 ### 3. JS 解析 XML，并更新局部页面(**以前是用JS解析XML，现在是用JS解析JSON**)
 * 通过 console.log(request)可以在开发者控制台看到很多事件。基本都在[XMLHttpRequest接口的链接里面，包括属性和方法](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest),此接口继承了 XMLHttpRequestEventTarget 和 EventTarget 的属性。
 * 通过[XMLHttpRequest.readyState](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState)属性返回一个 XMLHttpRequest  代理当前所处的状态。一个 XHR 代理总是处于下列状态中的一个：
+
+
 |值	|状态|	描述|
 |--:|--:|--:|
 |0	|UNSENT	|代理被创建，但尚未调用 open() 方法。|
