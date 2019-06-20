@@ -144,6 +144,79 @@ myButton.addEventListener('click',function(e){
     `)
 ```
 * 这样就可以在在开发者工具的响应的最后一部分中看到这一串符合XML格式的字符串啦。
+### 3. JS 解析 XML，并更新局部页面(**以前是用JS解析XML，现在是用JS解析JSON**)
+* 通过 console.log(request)可以在开发者控制台看到很多事件。基本都在[XMLHttpRequest接口的链接里面，包括属性和方法](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest),此接口继承了 XMLHttpRequestEventTarget 和 EventTarget 的属性。
+* 通过[XMLHttpRequest.readyState](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState)属性返回一个 XMLHttpRequest  代理当前所处的状态。一个 XHR 代理总是处于下列状态中的一个：
+|值	|状态|	描述|
+|--:|--:|--:|
+|0	|UNSENT	|代理被创建，但尚未调用 open() 方法。|
+|1	|OPENED	open() |方法已经被调用。|
+|2	|HEADERS_RECEIVED	send() |方法已经被调用，并且头部和状态已经可获得（**这里说明响应可以是分次数返回的，也就是响应的四个部分可以分几次返回**）。|
+|3	|LOADING	|下载中； responseText 属性已经包含部分数据。|
+|4	|DONE	|下载操作已完成。|
+* 我们在console.log(request)中看到的是4，但是在console.log(request.readyState)看到的是1——原因是这个请求需要大概9ms左右，这对于计算机来说已经很慢了。
+### 通过循环及赋值来看看需要多少时间
+#### 赋值代码为：
+`console.time(); var a=1; console.timeEnd()`
+* 输出之后显示:default: 0.010009765625ms，所以赋值操作大概是0.01ms
+#### 空循环代码为
+```
+console.time(); 
+for(var i=1;i<10;i++)
+{}; 
+console.timeEnd()
 
+VM178:4 default: 0.007080078125ms//这是输出所用的时间
+```
+#### 有内容的循环代码为
+```
+console.time(); 
+for(var i=1;i<10;i++){
+ console.log(i)
+}; 
+console.timeEnd()
+web-6c84cca251bafe69e9e1.js:1 1
+web-6c84cca251bafe69e9e1.js:1 2
+web-6c84cca251bafe69e9e1.js:1 3
+web-6c84cca251bafe69e9e1.js:1 4
+web-6c84cca251bafe69e9e1.js:1 5
+web-6c84cca251bafe69e9e1.js:1 6
+web-6c84cca251bafe69e9e1.js:1 7
+web-6c84cca251bafe69e9e1.js:1 8
+web-6c84cca251bafe69e9e1.js:1 9
+VM121:5 default: 3.721923828125ms//这是输出所用的时间
+```
+* 当然以上的计算不是特别精确，但是可以看到循环十次只需要3ms左右，那么这里的9ms就可以执行很多行代码啦。**所以请求的速度是慢于代码执行的速度的**。
+
+#### 通过setTimeout来设置1ms监听
+* 代码为
+```
+  setInterval(() => {
+    console.log(request.readyState)
+  }, 1);
+```
+可以看到输出结果从1直接跳到4了，这里是因为2和3太快了，捕捉不到，比1ms还要快。**并且不管这个代码放在open前面还是后面都不会显示数字0，因为代码执行的速度是大于这个延迟函数1ms的速度的**。
+
+* 如果在open之前不用延迟函数，那么就可以显示出数字0.**因为open之前还没有发起请求，都是按照代码执行的速度，速度是一样的**。
+`  console.log(request.readyState)//把它放到open之前就可以显示数字0`
+***
+* 我们大部分时候只需要记住4这个状态，代码请求已经把响应下载完毕。也就是请求完成。
+***
+
+#### 通过XMLHttpRequest.onreadystatechange来查看显示的1,2,3,4
+如果把它放到open之前就可以显示出1,2,3,4,因为此时就是从0开始变化到1就有输出啦。
+```
+  request.onreadystatechange=function(){
+    console.log(request.readyState)
+  }
+  request.open('get','./xxx')
+```
+* 但是如果放到open之后就只显示出2,3,4,因为此时从0到1的阶段结束了，只有1到2的变化后开始输出。
+```
+  request.open('get','./xxx')
+  request.onreadystatechange=function(){
+    console.log(request.readyState)
+  }
+```
 
 

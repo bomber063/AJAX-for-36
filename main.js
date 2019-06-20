@@ -61,11 +61,20 @@
 // })
 
 myButton.addEventListener('click',function(e){
+  
   let request=new XMLHttpRequest()
   // request.open('get','http://bomber.com:8001/xxx')
-  request.open('get','./xxx')
 
+  request.open('get','./xxx')
+  request.onreadystatechange=function(){
+    console.log(request.readyState)
+  }
   request.send()
+
+
+  // setInterval(() => {
+  //   console.log(request.readyState)
+  // }, 1);
   // request.onreadystatechange=function(){
   //   if(request.readyState===4){
   //     if(request.status>=200&& request.status<300){
