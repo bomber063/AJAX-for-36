@@ -240,7 +240,7 @@ VM121:5 default: 3.721923828125ms//这是输出所用的时间
   }
 ```
 * 当然把后端改成404,这里就会显示说明请求失败。
-#### AJAX拿到后端返回的响应信息的API——responseText(以XML为例子，XML它现在已经过时了，但是可以学习它的某些操作)
+#### AJAX拿到后端返回的响应信息后如何获取(以XML为例子，XML它现在已经过时了，但是可以学习它的某些操作)
 * 通过[XMLHttpRequest.responseText](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/responseText) 属性返回一个**DOMString**，它包含对文本的请求的响应，如果请求不成功或尚未发送，则返回null。responseText属性在请求完成之前将会得到部分属性。 如果 XMLHttpRequest.responseType 的值不是 text 或者空字符串，届时访问 XMLHttpRequest.responseText 将抛出 InvalidStateError 异常。
 * 而这里就是返回的是**字符串，只是长得像XML**，我们可以通过responseText.__proto__可以看到他是一个字符串。
 ```
@@ -285,7 +285,7 @@ xmlDoc = parser.parseFromString(text,"text/xml");
 一旦建立了一个解析对象以后,你就可以使用它的parseFromString方法来解析一个XML字符串:
 
 #### 我们把原来代码修改下
-* 此时需要删除前面的申明<?xml version="1.0" encoding="UTF-8"?>，不删除可能会报错。
+* 此时需要删除前面的申明`<?xml version="1.0" encoding="UTF-8"?>`，不删除可能会报错。
 * 后端代码修改如下：
 ```
 else if (path === '/xxx') {
@@ -313,18 +313,79 @@ else if (path === '/xxx') {
         console.log('说明请求成功')
       }
 ```
-* 此时就把DOMstring字符串解析（或者是转换）成了XML对象
+* 此时就把**DOMstring字符串解析（或者是转换）成了XML对象**。
+***
+DOM的API操作会有一些麻烦和局限，并且不够简单。
+***
+### 用JSON就可以简单的表示一些有结构的数据
+* XML大概用了五六年左右后出现了JSON，JSON（JavaScript Object Notation，JavaScript对象表示法）是一种由道格拉斯·克罗克福特构想和设计、轻量级的数据交换**语言**。[JSON维基百科](https://zh.wikipedia.org/wiki/JSON),[JSON百度百科](https://baike.baidu.com/item/JSON/2462549?fr=aladdin)。
+* 另一种历史就是道格拉斯抄袭JavaScript而发明了JSON，它写了一本书叫做JavaScript：语言精粹（JavaScript: The Good Parts，2008年），内容是说JavaScript哪里不好。感觉对JS之父有深深的恶意，哈哈
+* 学习JSON语言比较简单看看[官方网站](https://www.json.org/)，学过JavaScript的很容易理解
+#### JSON和JavaScript的区别
+1. JSON没有抄袭function和undefined
+2. JSON字符串的收尾必须是双引号""
+3. 表格列出更多区别
 
+|JSON|JavaScript|
+|:--:|:--:|
+|没有|undefined|
+|null|null|
+|数组["a","b"]|数组['a','b']|
+|没有函数|函数function fn(){}|
+|对象{"name":"bomber"}|对象{name:'bomber'}|
+|字符串"bomber"|字符串'bomber'|
+|搞不定，因为JSON没有变量，不能引用|声明一个对象引用自己var a={}<br>a.self=a|
+|没有原型链|有原型链|
 
-    // {
-    //   "note":{
-    //     "to": "小谷",
-    //     "from": "方方",
-    //     "heading": "打招呼",
-    //     "content": "hi"
-    //   }
-    // }
-    // <?xml version="1.0" encoding="UTF-8"?>
+#### 把代码改成JSON形式
+* 后端部分代码
+```
+    response.write(`
+    {
+      "note":{
+        "to": "小谷",
+        "from": "bomber",
+        "heading": "打招呼",
+        "content": "hi"
+      }
+    }
+    `)
+```
+* 前端部分修改为：
+```
+      if (request.status >= 200 && request.status < 300) {
+        console.log(request.responseText)//这里可以通过type of或者查看原型链看到是一个字符串
+        console.log('说明请求成功')
+      }
+```
+* 前端部分收到后端返回的响应是字符串。
+* 我们继续增加代码把这个符合JSON格式的字串符转换成，需要用到[JSON.parse()](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse) 方法用来解析JSON字符串，构造由字符串描述的JavaScript值或对象。提供可选的reviver函数用以在返回之前对所得到的对象执行变换(操作)。
+* 前端部分代码继续修改为：
+```
+request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      console.log('说明请求完毕')
+      if (request.status >= 200 && request.status < 300) {
+        let string = request.responseText
+        let object = window.JSON.parse(string)//把符合JSON语法的字符串转换成JS对应的值（这里就是对象）。这个值包括数组，函数，布尔等等
+        console.log(typeof string)//查看string显示可以看到是一个字符串
+        console.log(typeof object)//查看object显示可以看到是一个对象
+        console.log('object.note')
+        console.log(object.note)//可以通过点操作符找到note这个对象
+        console.log('object.note.from')
+        console.log(object.note.from)//继续通过点操作符找到from这个key里面对应的value
+        console.log('说明请求成功')
+      }
+      else if (request.status >= 400) {
+        console.log('说明请求失败')
+      }
+    }
+  }
+```
+这段onreadystatechange必须放到`let request = new XMLHttpRequest()`之后，但是放到open和send的前后都没有关系。
+
+### 还有JS来写JSON.parse
+* 比如[JSON3.js库](https://bestiejs.github.io/json3/)，目前为止不需要管。
 
 
 

@@ -36,16 +36,18 @@ var server = http.createServer(function (request, response) {
   } else if (path === '/xxx') {
     response.statusCode = 200
     // response.setHeader('Content-Type', 'text/json;charset=utf-8')
-    response.setHeader('Content-Type', 'text/xml;charset=utf-8')
+    response.setHeader('Content-Type', 'text/json;charset=utf-8')
 
     // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')
     response.write(`
-<note>
-  <to>小谷</to>
-  <from>bomber</from>
-  <heading>打招呼</heading>
-  <body>你好</body>
-</note>
+    {
+      "note":{
+        "to": "小谷",
+        "from": "bomber",
+        "heading": "打招呼",
+        "content": "hi"
+      }
+    }
     `)
     response.end()
   } else {

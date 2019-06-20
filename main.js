@@ -61,15 +61,12 @@
 // })
 
 myButton.addEventListener('click', function (e) {
-
   let request = new XMLHttpRequest()
   // request.open('get','http://bomber.com:8001/xxx')
 
-  request.open('get', './xxx')
   // request.onreadystatechange=function(){
   //   console.log(request.readyState)
   // }
-  request.send()
 
 
   // setInterval(() => {
@@ -79,12 +76,20 @@ myButton.addEventListener('click', function (e) {
     if (request.readyState === 4) {
       console.log('说明请求完毕')
       if (request.status >= 200 && request.status < 300) {
-        let parser = new DOMParser();
-        let xmlDoc = parser.parseFromString(request.responseText, "text/xml");
-        console.log(xmlDoc)
-        console.log(xmlDoc.__proto__)
-        let title=xmlDoc.getElementsByTagName('heading')[0].textContent
-        console.log(title)
+        // let parser = new DOMParser();
+        // let xmlDoc = parser.parseFromString(request.responseText, "text/JSON");
+        // console.log(xmlDoc)
+        // console.log(xmlDoc.__proto__)
+        // let title=xmlDoc.getElementsByTagName('heading')[0].textContent
+        // console.log(title)
+        let string = request.responseText
+        let object = window.JSON.parse(string)//把符合JSON语法的字符串转换成JS对应的值（这里就是对象）。这个值包括数组，函数，布尔等等
+        console.log(typeof string)//查看string显示可以看到是一个字符串
+        console.log(typeof object)//查看object显示可以看到是一个对象
+        console.log('object.note')
+        console.log(object.note)//可以通过点操作符找到note这个对象
+        console.log('object.note.from')
+        console.log(object.note.from)//继续通过点操作符找到from这个key里面对应的value
         console.log('说明请求成功')
       }
       else if (request.status >= 400) {
@@ -92,6 +97,9 @@ myButton.addEventListener('click', function (e) {
       }
     }
   }
+
+  request.open('get', './xxx')
+  request.send()
 })
 
 
