@@ -323,7 +323,7 @@ DOM的API操作会有一些麻烦和局限，并且不够简单。
 * 学习JSON语言比较简单看看[官方网站](https://www.json.org/)，学过JavaScript的很容易理解
 #### JSON和JavaScript的区别
 1. JSON没有抄袭function和undefined
-2. JSON字符串的收尾必须是双引号""
+2. JSON字符串的首尾必须是双引号""
 3. 表格列出更多区别
 
 |JSON|JavaScript|
@@ -386,6 +386,17 @@ request.onreadystatechange = function () {
 
 ### 还有JS来写JSON.parse
 * 比如[JSON3.js库](https://bestiejs.github.io/json3/)，目前为止不需要管。
+
+### 同源策略与CORS跨域
+#### 用form测试同源
+* 前端代码为：
+```
+  <form action="https://www.baidu.com" method="get">
+    <input type="password" name="password">
+    <input type="submit">
+  </form>
+```
+* 通过开发者平台，**记住需要打开preserve log(保留日志)**,通过点击提交后显示出来200，说明请求成功。
 
 
 
