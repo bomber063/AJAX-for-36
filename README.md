@@ -396,7 +396,19 @@ request.onreadystatechange = function () {
     <input type="submit">
   </form>
 ```
-* 通过开发者平台，**记住需要打开preserve log(保留日志)**,通过点击提交后显示出来200，说明请求成功。
+* 通过开发者平台，**记住需要打开preserve log(保留日志)**,通过点击提交后显示出来200，说明请求成功。并且也没有报错。
 
+#### 用AJAX方法测试同源
+* 前端代码修改一句
+```
+  request.open('get', 'https://www.baidu.com')
+```
+* 并且把[request.status](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/status)打印出来可以在控制台看到显示是0.
+* **在请求完成前，status的值为0。值得注意的是，如果 XMLHttpRequest 出错，浏览器返回的 status 也为0**。
+* 并且在Netword里面看请求显示200成功啦。但是在控制台显示了报错，这里的报错就是同源策略问题。说明可以发请求成功，但是
+```
+      console.log(request.status)
+```
+* 最后说明，如果你不是baidu.com页面里面的JS，就不能向baidu.com这个域名发起AJAX请求。当然你可以通过其他的发请求，比如img,iframe,form,css,script,a,link等。
 
 

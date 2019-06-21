@@ -75,6 +75,7 @@ myButton.addEventListener('click', function (e) {
   request.onreadystatechange = function () {
     if (request.readyState === 4) {
       console.log('说明请求完毕')
+      console.log(request.status)
       if (request.status >= 200 && request.status < 300) {
         // let parser = new DOMParser();
         // let xmlDoc = parser.parseFromString(request.responseText, "text/JSON");
@@ -98,7 +99,7 @@ myButton.addEventListener('click', function (e) {
     }
   }
 
-  request.open('get', './xxx')
+  request.open('get', 'https://www.baidu.com')
   request.send()
 })
 
