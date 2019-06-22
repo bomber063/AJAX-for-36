@@ -475,6 +475,9 @@ request.onreadystatechange = function () {
         let string = request.responseText
         let object = window.JSON.parse(string)
       }
+      else if (request.status >= 400) {
+        console.log('说明请求失败')
+      }
     }
   }
 ```
