@@ -461,3 +461,19 @@ request.onreadystatechange = function () {
 2. [链接2](https://blog.csdn.net/frgod/article/details/78747143)
 3. [链接3](https://blog.csdn.net/Minco_Tse/article/details/51542250)
 4. [链接4](https://blog.csdn.net/u011050607/article/details/78385954)
+
+### 手写一个AJAX
+* 前端代码为
+```
+ let request = new XMLHttpRequest()
+  request.open('get', 'http://bomber.com:8001/xxx')
+  request.send()
+    request.onreadystatechange = function () {
+    if (request.readyState === 4) {
+      if (request.status >= 200 && request.status < 300) {
+        let string = request.responseText
+        let object = window.JSON.parse(string)
+      }
+    }
+  }
+```
