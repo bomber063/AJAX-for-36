@@ -71,7 +71,7 @@
 2. 想以什么形式展示就以什么形式展示
 
 ## 微软的突破
-* IE 5 率先在 JS 中引入 ActiveX 对象（API），使得 JS 可以直接发起 HTTP 请求。IE在早期对web的贡献是十分巨大的，只不过IE没有遵从标准，可能当时是有点自大了，导致后面出了一个chorme一军突起，导致IE走向末路。早期的IE6占了全球浏览器的90%份额，当时还有一个firefox占了10%左右的份额，然后IE的负责部分就把IE的维护拆掉了，只留下很少的人维护不出病毒即可，也不怎么更新了。firefox也是一直都不温不火，最后被谷歌开发的浏览器chrome突然击垮了IE浏览器。chorme浏览器大概是2008年出现的。仅仅用了两年时间就把IE的份额准平了，现在已经占到份额40%左右。IE大概30%左右。现在大陆用IE的也不多了，开发者一般用chorme，别的用双核浏览器——[维基百科](https://zh.wikipedia.org/wiki/%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8),[百度百科](https://baike.baidu.com/item/%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8/7126309?fr=aladdin)
+* IE 5 率先在 JS 中引入 ActiveX 对象（API）,但是他没有纳入到规范里面。使得 JS 可以直接发起 HTTP 请求。IE在早期对web的贡献是十分巨大的，只不过IE没有遵从标准，可能当时是有点自大了，导致后面出了一个chorme一军突起，导致IE走向末路。早期的IE6占了全球浏览器的90%份额，当时还有一个firefox占了10%左右的份额，然后IE的负责部分就把IE的维护拆掉了，只留下很少的人维护不出病毒即可，也不怎么更新了。firefox也是一直都不温不火，最后被谷歌开发的浏览器chrome突然击垮了IE浏览器。chorme浏览器大概是2008年出现的。仅仅用了两年时间就把IE的份额准平了，现在已经占到份额40%左右。IE大概30%左右。现在大陆用IE的也不多了，开发者一般用chorme，别的用双核浏览器——[维基百科](https://zh.wikipedia.org/wiki/%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8),[百度百科](https://baike.baidu.com/item/%E5%8F%8C%E6%A0%B8%E6%B5%8F%E8%A7%88%E5%99%A8/7126309?fr=aladdin)
 * 随后 Mozilla、 Safari、 Opera 也跟进（抄袭）了，取名 XMLHttpRequest，它的[MDN链接](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest)，[它的W3c链接](http://www.w3school.com.cn/xml/xml_http.asp)并被纳入 W3C 规范
 ***
 我们可以在控制台输入
@@ -440,3 +440,24 @@ request.onreadystatechange = function () {
 ```
 * 后台增加一个[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)响应头指定了该响应的资源是否被允许与给定的origin共享。
 
+#### 增加多个网站访问
+* 后端代码可以添加一句响应头即可
+```
+    response.setHeader('Access-Control-Allow-Origin', '*')//告诉浏览器所有人是我的朋友，不要限制他们的访问
+```
+* 这里不可以写多行，多行的，后面一行会把前面一行覆盖掉
+```
+    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')
+    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber3.com:8003')//这一行会把前面的一行覆盖掉
+```
+* 也不可以用逗号来实现多个网站访问
+* 比如这样是不行的。
+```
+    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002 , http://bomber3.com:8003')
+```
+* 如何实现，我找了一些说明，但是目前还看不太懂 
+
+1. [链接1](https://blog.csdn.net/Minco_Tse/article/details/51542250)
+2. [链接2](https://blog.csdn.net/frgod/article/details/78747143)
+3. [链接3](https://blog.csdn.net/Minco_Tse/article/details/51542250)
+4. [链接4](https://blog.csdn.net/u011050607/article/details/78385954)

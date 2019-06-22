@@ -38,10 +38,10 @@ var server = http.createServer(function (request, response) {
     // response.setHeader('Content-Type', 'text/json;charset=utf-8')
     response.setHeader('Content-Type', 'text/json;charset=utf-8')
 
-    response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')//告诉浏览器http://bomber2.com:8002是我的朋友，不要限制他的访问
-    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber3.com:8003')//
+    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')//告诉浏览器http://bomber2.com:8002是我的朋友，不要限制他的访问
+    // response.setHeader('Access-Control-Allow-Origin', 'http://bomber3.com:8003')
     // response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002 , http://bomber3.com:8003')
-    // response.setHeader('Access-Control-Allow-Origin', '*')//告诉浏览器所有人是我的朋友，不要限制他们的访问
+    response.setHeader('Access-Control-Allow-Origin', '*')//告诉浏览器所有人是我的朋友，不要限制他们的访问
 
     response.write(`
     {
