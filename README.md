@@ -207,7 +207,8 @@ VM121:5 default: 3.721923828125ms//这是输出所用的时间
 ***
 
 #### 通过XMLHttpRequest.onreadystatechange来查看显示的1,2,3,4
-如果把它放到open之前就可以显示出1,2,3,4,因为此时就是从0开始变化到1就有输出啦。
+* 只要 readyState 属性发生变化，就会调用相应的处理函数。这个回调函数会被用户线程所调用。[XMLHttpRequest.onreadystatechange](https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/onreadystatechange) 会在 XMLHttpRequest 的readyState 属性发生改变时触发 readystatechange 事件的时候被调用。
+* 如果把它放到open之前就可以显示出1,2,3,4,因为此时就是从0开始变化到1就有输出啦。
 ```
   request.onreadystatechange=function(){
     console.log(request.readyState)
@@ -468,7 +469,7 @@ request.onreadystatechange = function () {
  let request = new XMLHttpRequest()
   request.open('get', 'http://bomber.com:8001/xxx')
   request.send()
-    request.onreadystatechange = function () {
+    request.onreadystatechange = function () {//注意这个API都是小写
     if (request.readyState === 4) {
       if (request.status >= 200 && request.status < 300) {
         let string = request.responseText
