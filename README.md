@@ -420,4 +420,13 @@ request.onreadystatechange = function () {
 2. http://baidu.com:80不可以向http://baidu.com:81发AJAX请求。
 * [原知乎链接关于为什么form表单提交没有跨域问题，但ajax提交有跨域问题](https://www.zhihu.com/question/31592553/answer/190789780)
 
-
+#### 通过两个网站来测试
+* 前面我们做了两个网站了，只是这两个网址经过DNS转换成IP后都是一个地址，但是网站却不同，见前面[链接](https://github.com/bomber063/JSONP-for-35)
+* 打开了两个网站
+1. http://bomber2.com:8002/
+2. http://bomber.com:8001/
+* 然后我们把前端代码修改一下：把open里面的网站写成第二个的网站名字。
+```
+  request.open('get', 'http://bomber.com:8001/xxx')
+```
+* 这样的话只有第二个网站可以发起AJAX请求，第一个就会被报错。

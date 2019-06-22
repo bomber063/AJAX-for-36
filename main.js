@@ -99,7 +99,7 @@ myButton.addEventListener('click', function (e) {
     }
   }
 
-  request.open('get', 'https://www.baidu.com')
+  request.open('get', 'http://bomber.com:8001/xxx')
   request.send()
 })
 
