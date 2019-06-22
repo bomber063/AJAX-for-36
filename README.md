@@ -429,4 +429,14 @@ request.onreadystatechange = function () {
 ```
   request.open('get', 'http://bomber.com:8001/xxx')
 ```
-* 这样的话只有第二个网站可以发起AJAX请求，第一个就会被报错。
+* 这样的话只有第二个网站可以发起AJAX请求，第一个http://bomber2.com:8002/就会被报错。
+
+#### 那么如何解决第一个http://bomber2.com:8002/报错的问题？
+1. 可以用上一次说明的[方法](https://github.com/bomber063/JSONP-for-35)，使用JSONP的方式。
+2. 使用[CORS(Cross-Origin Resource Sharing)跨域资源共享)](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Access_control_CORS)
+* 后端代码可以添加一句响应头即可
+```
+    response.setHeader('Access-Control-Allow-Origin', 'http://bomber2.com:8002')//告诉浏览器http://bomber2.com:8002是我的朋友，不要限制他的访问
+```
+* 后台增加一个[Access-Control-Allow-Origin](https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Access-Control-Allow-Origin)响应头指定了该响应的资源是否被允许与给定的origin共享。
+
